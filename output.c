@@ -20,4 +20,5 @@ int main()
         x+=total(i);
     }
     printf("%d\n",x);
+    return 0;
 }

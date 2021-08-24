@@ -16,7 +16,7 @@ int main()
     {
         sum+=*(p+i);
     }
-    printf("sum=%d",sum);
+    printf("%d ",sum);
     
     return 0;
 }
