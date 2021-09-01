@@ -11,7 +11,7 @@ int main()
     int sum=0;
     printf("\nEnter elements\n");
     for(int i=0;i<n;i++)
-    {
+    { 
         scanf("%d",(ptr+i));
         sum+=*(ptr+i);
     }

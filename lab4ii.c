@@ -17,10 +17,10 @@ void destroy();
 int main (void)
 {
     int n;
-    printf ("\nEnter the no of node: ");
+    printf ("\nEnter the no of nodes: ");
     scanf ("%d",&n);
     create (n);
-    NODE *s=start;
+    NODE *s=start; 
     display(s);
     destroy();
     return 0;

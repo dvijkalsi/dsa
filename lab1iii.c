@@ -21,7 +21,7 @@ int main()
         printf("\nEnter cgpa:");
         scanf("%f",&s[i].cgpa);
         printf("\nEnter subjects:");
-        scanf("%s",&s[i].sub);
+        scanf("%s",&s[i].sub); 
     }
  
     for(int i=0;i<5;i++)

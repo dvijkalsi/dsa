@@ -1,5 +1,5 @@
-//WAP to create SLL and to display the values of each node(atleast 5) using user defined create and display
-//function and insert node at beginning, in the middle and at the end.
+//WAP to create an SLL and delete at a given postion using menu driven program
+
 #include<stdio.h>
 #include<stdlib.h>
 
@@ -12,7 +12,7 @@ struct node *first =NULL;
 void destroy()
 {
 
-    if (!first) return;
+    
 
     struct node *ds = first;
     while (ds != NULL)
@@ -58,31 +58,45 @@ int main()
         temp=temp->next;
     }
 
-    printf("\nInsert a node at\n1.start; or\n2.End; or\n3.Middle\nEnter a choice:");
+    printf("\nDelete a node at\n1.start; or\n2.End; or\n3.Middle\nEnter a choice:");
     int c;
     scanf("%d",&c);
-        struct node *x;
-        x=(struct node*)malloc(sizeof(struct node));
-        printf("\nEnter data:");
-        scanf("%d",&x->data);
-        x->next=NULL;
+    struct node* temp2;
     switch (c)
     {
     case 1:
-        
+            temp=first;
+            first=first->next;
+            printf("\nData of node deleted:%d",temp->data);
+            free(temp);
+            temp=NULL;
 
-        x->next=first;
-        first=x;
+
         break;
     case 2:
+            temp=first;
+            
+            temp2=first;
 
-        last->next=x;
-        last=last->next;
+            while(temp2->next)
+            {
+                temp=temp2;
+                temp2=temp2->next;
+            }
+            temp->next=NULL;
+            
+            printf("\nData of deleted node:%d",temp2->data);
+            free(temp2);
+            temp2=NULL;
+            
+        
         break;
     case 3:
         temp=first;
 
-        printf("Enter the postition after which new node to be inserted:");
+        temp2=first;
+
+        printf("Enter the position to be deleted:");
 
         int pos;
         scanf("%d",&pos);
@@ -91,12 +105,22 @@ int main()
             printf("Invalid position");
             break;
         }
-        for(int i=1;i<pos-1;++i)
+        for(int i=1;i<pos;++i)
         {
-            temp=temp->next;
+            temp=temp2;
+            temp2=temp2->next;
+            if(temp2 == NULL)
+                break;
         }
-        x->next=temp->next;
-        temp->next=x;
+        printf("\nData of deleted node:%d",temp2->data);
+
+
+        temp->next=temp2->next;
+        temp2->next=NULL;
+        free(temp2);
+        temp2=NULL;
+
+
         break;
     
     default:
