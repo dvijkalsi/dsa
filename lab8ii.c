@@ -5,7 +5,6 @@ c) peekMiddleElement - return the (size/2+1)th lowest element in the stack witho
 #include <stdio.h>
 #include <stdlib.h>
 typedef struct node NODE;
-typedef struct node NODE;
 struct node
 {
     int data;

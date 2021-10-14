@@ -30,17 +30,17 @@ void push(NODE **s,char d)
         (*s)=new;
     }
 }
-int pop(NODE **s)
+char pop(NODE **s)
 {
     if((*s)==NULL)
     {
-        printf("\nStack underflow");return -999 ;
+        printf("\nStack underflow");return '$';
     }
     char t=(*s)->data;
     NODE *temp=(*s);
     (*s)=(*s)->next;
     free(temp);
-    return 1;
+    return t;
 }
 void display(NODE **s)
 {
@@ -74,40 +74,54 @@ void destroy(NODE **s)
     }
     printf("\nList deleted");
 }
-int main()
+int check_brackets(char *str)
 {
-    char p[]="[}]";
-    int psize=strlen(p);
-    printf("\n%d",psize);
-    int flag=1;
-    for(int i=0;i<psize;++i)
+    int len=strlen(str);
+    for(int i=0;i<len;++i)
     {
-        if(p[i]=='('||p[i]=='{'||p[i]=='[')
+        if(((str[i]=='(')||(str[i]=='['))||(str[i]=='{'))
         {
-            push(&start1,p[i]);
+            push(&start1,str[i]);
         }
-        else if(start1!=NULL)
+        else if((str[i]==')') && (start1->data=='('))
         {
-            if((start1->data=='('&&p[i]==')')||(start1->data=='['&&p[i]==']')||(start1->data=='{'&&p[i]=='}'))
-            {
-                pop(&start1);
-            }
-        }      
-        else if(p[i]==')'||p[i]==']'||p[i]=='}')
-        {
-            flag=0;break;
+            pop(&start1);
         }
+        else if((str[i]=='}') && (start1->data=='{'))
+        {
+            pop(&start1);
+        }
+        else if((str[i]==']') && (start1->data=='['))
+        {
+            pop(&start1);
+        }
+        else if(((str[i]==')')||(str[i]==']'))||(str[i]=='}'))
+        {
+            printf("\nNO");
+            return 0;
+        }
+        
     }
-    
-    if((start1!=NULL)||(flag==0))
+    if(start1!=NULL)
     {
-        printf("NO");
+        
+        printf("\nNO");
+        return 0;
     }
     else 
-    {
-        printf("YES");
+    {   
+        
+        printf("\nYES");
+        return 1;
     }
-    
+}
+int main()
+{
+    char str[]="{[()]}";
+    check_brackets(str);
+    destroy(&start1);
+    char str2[]="{[(])}";
+    check_brackets(str2);
     destroy(&start1);
     return 0;
 }

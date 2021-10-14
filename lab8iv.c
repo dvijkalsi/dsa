@@ -1,4 +1,4 @@
-//WAP to convert an infix expression into its equivalent postfix notation. 
+//WAP to convert an infix expression into its equivalent prefix notation. 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -130,11 +130,11 @@ int prec(char t)
 	{
 	case '+':
 	case '-':
+    case '%':
 		return 1;
 	 
 	case '*':
 	case '/':
-	case '%':
 		return 2;
 	 
 	case '^':
@@ -143,7 +143,7 @@ int prec(char t)
 	return -1;
 	
 }
-void infix_to_postfix(char *q)
+char* infix_to_postfix(char *q)
 {
     
     
@@ -196,14 +196,35 @@ void infix_to_postfix(char *q)
         
         
     }
-    printf("\n%s",q);
-    printf("\npostfix:%s",p);
+    return p;
+    
+}
+void infix_to_prefix(char *r)
+{
+    printf("\ninfix:%s",r);
+    char *st=(char*)calloc(30,sizeof(char));
+    int c=0;
+    for(int i=strlen(r)-1;i>=0;i--)
+    {
+        st[c++]=r[i];
+    }
+    
+    st=infix_to_postfix(st);
+
+     c=0;
+    for(int i=strlen(st)-1;i>=0;i--)
+    {
+        r[c++]=st[i];
+    }
+    printf("\nPrefix:%s",r);
+    free(st);
 }
 int main()
 {
     char *q=(char*)malloc(sizeof(char)*30);
-    strcpy(q,"a+(b*c-(d/e^f)*g)*h");
-    infix_to_postfix(q);
+    strcpy(q,"a+b*c");
+    infix_to_prefix(q);
+    free(q);
     destroy(&start1);
     return 0;
 }

@@ -1,24 +1,22 @@
 #include<stdio.h>
-int total(int v)
+int total()
 {
-    static int count=0;
-     while(v)
-    {
-        count+=v&1;
-        v>>=1;
-    }
-    return count;
+ for(int i=0;i<10;++i)
+ {
+     if(i==5)
+     {
+         return 0;
+     }
+     if(i==6)
+     {
+         return 1;
+     }
+ }
 
 }
 int main()
 {
-    static int x=0;
-    int i=5;
-  
-    for(;i>0;i--)
-    {
-        x+=total(i);
-    }
+    int x=total();
     printf("%d\n",x);
     return 0;
 }
