@@ -11,9 +11,6 @@ struct node
 struct node *first =NULL;
 void destroy()
 {
-
-    
-
     struct node *ds = first;
     while (ds != NULL)
     {
