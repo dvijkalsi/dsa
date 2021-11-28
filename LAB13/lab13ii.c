@@ -78,25 +78,47 @@ void inorder_it(NODE *tr)
         }
     }
 }
-// void postorder_it(NODE *t)
-// {
-//     STACK *s;
-//     while(s || t)
-//     {
-//         if(t!=NULL)
-//         {
-//             push(&s,t);
-//             t=t->left;
 
-//         }
-//         else
-//         {
-//             t=pop(&s);
-//             t=t->right;
-//             printf("%d ",t->data);
-//         }
-//     }
-// }
+void postorder_it(NODE* root)
+{
+    // Check for empty tree
+    if (root == NULL)
+        return;
+     
+    STACK *stack;
+    do
+    {
+        // Move to leftmost node
+        while (root)
+        {
+            // Push root's right child and then root to stack.
+            if (root->right)
+                push(&stack, root->right);
+            push(&stack, root);
+ 
+            // Set root as root's left child
+            root = root->left;
+        }
+ 
+        // Pop an item from stack and set it as root    
+        root = pop(&stack);
+ 
+        // If the popped item has a right child and the right child is not
+        // processed yet, then make sure right child is processed before root
+        if (root->right && stack->data == root->right)
+        {
+            pop(&stack); // remove right child from stack
+            push(&stack, root); // push root back to stack
+            root = root->right; // change root so that the right
+                                // child is processed next
+        }
+        else // Else print root's data and set root as NULL
+        {
+            printf("%d ", root->data);
+            root = NULL;
+        }
+    } while (stack);
+}
 NODE* create()
 {
     NODE *p;
@@ -127,11 +149,38 @@ void delete_tree(NODE *root)
 int main()
 {
     root=create();
-    printf("\nInorder:");
-    inorder_it(root);
+    int c;
+    do
+    {
+        printf("0.Exit\n1.Iterative inorder\n2.Iterative preorder\n3.Iterative postorder\nEnter your choice:");
+        scanf("%d",&c);
+        switch (c)
+        {
+            case 0:
+            break;
+        case 1:
+            printf("\nInorder:");
+            inorder_it(root);
+            break;
+        case 2:
+            printf("\nPreorder:");
+            preorder_it(root);
+            break;
+        case 3:
+            printf("\nPostorder:");
+            postorder_it(root);
+            break;
+        default:
+            printf("\nInvalid choice");
+            break;
+        }
+    } while (c);
+    
+    // printf("\nInorder:");
+    // inorder_it(root);
 
-    printf("\nPreorder:");
-    preorder_it(root);
+    // printf("\nPreorder:");
+    // preorder_it(root);
 
 
     // printf("\nPostorder:");
