@@ -14,71 +14,58 @@ struct node
     int data;
     NODE *right;
 };NODE *root;
-// typedef struct queue Q;
-// struct queue
-// {
-//     NODE *data;
-//     Q *next;
-// };
-// void enque(Q **st,NODE *t)
-// {
-//     Q *new=(Q*)malloc(sizeof(Q));
-//     new->next=NULL;
-//     new->data=t;
-//     if(*st==NULL)
-//     {
-//         *st=new;
-//     }
-//     else
-//     {
-//         new->next=*st;
-//         *st=new;
-//     }
-// }
-// NODE* deque(Q **st)
-// {
-//     Q *a=*st;
-//     Q *b=NULL;
-//     while(a->next)
-//     {
-//         b=a;
-//         a=a->next;
-//     }
-//     b->next=NULL;
-//     NODE *c=a->data;
-//     free(a);
-//     return c;
-// }
+typedef struct queue Q;
+struct queue
+{
+    NODE *data;
+    Q *next;
+};
+void enque(Q **st,NODE *t)
+{
+    Q *new=(Q*)malloc(sizeof(Q));
+    new->next=NULL;
+    new->data=t;
+    if(*st==NULL)
+    {
+        *st=new;
+    }
+    else
+    {
+        Q *t=*st;
+        while(t->next) t=t->next;
+        t->next=new;
+    }
+}
+NODE* deque(Q **st)
+{
+    NODE *x=(*st)->data;
+    Q *y=*st;
+    *st=(*st)->next;
+    free(y);
+    return x;
+}
 
-// void levelOrder(NODE *root) //level order travesal using queue
-// {
-//     if (root == NULL) return;
-//     Q *q;
-//     NODE *curr;
-//     // Enqueue Root and NULL node.
-//     enque(&q,root);
-//     enque(&q,NULL);
-//     while (q)
-//     {
-//         curr = deque(&q);
-//         // condition to check occurrence of next level.
-//         if (curr == NULL)
-//         {
-//            enque(&q,NULL);
-//            printf("\n");
-//         }
-//         else
-//         {
-//             // pushing left child of current node.
-//             if(curr->left)
-//             enque(&q,curr->left);
-//             // pushing right child of current node.
-//             if(curr->right)
-//             enque(&q,curr->right);
-//             printf("%d ",curr->data);
-//         }
-//     }
-// }
+void levelOrder(NODE *p) //level order travesal using queue
+{
+    Q *q=NULL;
+    printf("%d ",p->data);
+    enque(&q,p);
+    while(q)
+    {
+        p=deque(&q);
+        if(p->left)
+        {
+            printf("%d ",p->left->data);
+            enque(&q,p->left);
+        }
+        if(p->right)
+        {
+            printf("%d ",p->right->data);
+            enque(&q,p->right);
+        }
+
+    }
+}
 
 
 void delete_tree(NODE *root)
@@ -130,53 +117,7 @@ NODE* deleteLeaf(NODE* root, int x)
     }
     return root;
 }
-int max(int a, int b)
-{
-    if(a>b)
-    {
-        return a;
-    }
-    else
-    {
-        return b;
-    }
-}
-int depth(NODE *root)
-{
-    if(root==NULL)
-    {
-        return -1;
-    }
-    else 
-    {
-        int leftD=depth(root->left);
-        int rightD=depth(root->right);
-        return max(leftD,rightD)+1;
-    }
-}
 
-void print_kth_level(NODE *root , int k)   
-{
-   if(root == NULL|| k < 0 )  return;
-   if( k == 0 )
-   {
-        printf( "%d ", root->data );
-        return ;
-   }  
-    print_kth_level( root->left, k-1 ) ;
-    print_kth_level( root->right, k-1 ) ;
-}
-void printLevelOrder(NODE *root)
-{        
-    int d = depth(root);
-    int i;
-    for(i=0;i<=d;i++) 
-    {
-        printf("\n");
-         print_kth_level(root,i);
-    }
-   
-}
 NODE* minValueNode(NODE* node)
 {
     struct node* current = node;
@@ -238,6 +179,7 @@ NODE* deleteNode(NODE* root, int key)
 }
 int main()
 {
+
     insert(&root,100);
     insert(&root,50);
     insert(&root,200);
@@ -248,15 +190,13 @@ int main()
     insert(&root,300);
     insert(&root,170);
     insert(&root,210);
-    printf("\nBefore deletion");
-    printLevelOrder(root);
-    printf("\nAfter deletion");
+    printf("\nBefore deletion:");
+    levelOrder(root);
     deleteNode(root, 60);
     deleteNode(root, 200);
-    deleteLeaf(root, 210);
-    printLevelOrder(root);
-    printf("\n");
-    inorderTraversal(root);
+    deleteLeaf(root, 170);
+        printf("\nAfter deletion:");
+    levelOrder(root);
     delete_tree(root);
     return 0;
 }
