@@ -78,11 +78,11 @@ void delete_tree(NODE *root)
     }
 
 }
-void inorderTraversal(struct node* root)
+void inorderTraversal(NODE* root)
 {
     if (root == NULL) return;
     inorderTraversal(root->left);
-    printf("%d ->", root->data);
+    printf("%d ", root->data);
     inorderTraversal(root->right);
 }
 void insert(NODE **tree, int value) 
@@ -104,79 +104,136 @@ void insert(NODE **tree, int value)
         insert(&(*tree)->right, value);
     }
 }
-NODE* deleteLeaf(NODE* root, int x)
+int Height(NODE *p)
 {
-    if (root == NULL)   return NULL;
-    root->left = deleteLeaf(root->left, x);
-    root->right = deleteLeaf(root->right, x);
-    if (root->data == x && root->left == NULL && root->right == NULL) 
+    int x,y;
+    if(p==NULL)return 0;
+    x=Height(p->left);
+    y=Height(p->right);
+    return x>y?x+1:y+1;
+}
+NODE* InPre(NODE *p)
+{
+    while(p && p->right!=NULL)
+    p=p->right;
+
+    return p;
+}
+NODE *InSucc(NODE *p)
+{
+    while(p && p->left!=NULL)
+    p=p->left;
+
+    return p;
+}
+NODE *Delete(NODE *p,int key)
+{
+    NODE *q;
+
+    if(p==NULL)
+        return NULL;
+    if(p->left==NULL && p->right==NULL)
     {
-        printf("\nDeleted leaf:%d",root->data);
-        free(root);
+        if(p==root)
+            root=NULL;
+        free(p);
         return NULL;
     }
-    return root;
-}
 
-NODE* minValueNode(NODE* node)
-{
-    struct node* current = node;
- 
-    /* loop down to find the leftmost leaf */
-    while (current && current->left != NULL)
-        current = current->left;
- 
-    return current;
-}
- 
-NODE* deleteNode(NODE* root, int key)
-{
-    // base case
-    if (root == NULL)
-        return root;
-    // If the key to be deleted
-    // is smaller than the root's
-    // key, then it lies in left subtree
-    if (key < root->data)
-        root->left = deleteNode(root->left, key);
- 
-    // If the key to be deleted
-    // is greater than the root's
-    // key, then it lies in right subtree
-    else if (key > root->data)
-        root->right = deleteNode(root->right, key);
-    // if key is same as root's key,
-    // then This is the node
-    // to be deleted
-    else {
-        // node with only one child or no child
-        if (root->left == NULL)
+    if(key < p->data)
+        p->left=Delete(p->left,key);
+    else if(key > p->data)
+        p->right=Delete(p->right,key);
+    else
+    {
+        if(Height(p->left)>Height(p->right))
         {
-            NODE* temp = root->right;
-            free(root);
-            return temp;
+            q=InPre(p->left);
+            p->data=q->data;
+            p->left=Delete(p->left,q->data);
         }
-        else if (root->right == NULL) 
-        {
-            NODE* temp = root->left;
-            free(root);
-            return temp;
-        }
- 
-        // node with two children:
-        // Get the inorder successor
-        // (smallest in the right subtree)
-        NODE* temp = minValueNode(root->right);
-
-        // Copy the inorder
-        // successor's content to this node
-        root->data = temp->data;
- 
-        // Delete the inorder successor
-        root->right = deleteNode(root->right, temp->data);
+    else
+    {
+        q=InSucc(p->right);
+        p->data=q->data;
+        p->right=Delete(p->right,q->data);
     }
-    return root;
+    }
+    return p;
 }
+// NODE* deleteLeaf(NODE* root, int x)
+// {
+//     if (root == NULL)   return NULL;
+//     root->left = deleteLeaf(root->left, x);
+//     root->right = deleteLeaf(root->right, x);
+//     if (root->data == x && root->left == NULL && root->right == NULL) 
+//     {
+//         printf("\nDeleted leaf:%d",root->data);
+//         free(root);
+//         return NULL;
+//     }
+//     return root;
+// }
+
+// NODE* minValueNode(NODE* node)
+// {
+//     struct node* current = node;
+ 
+//     /* loop down to find the leftmost leaf */
+//     while (current && current->left != NULL)
+//         current = current->left;
+ 
+//     return current;
+// }
+ 
+// NODE* deleteNode(NODE* root, int key)
+// {
+//     // base case
+//     if (root == NULL)
+//         return root;
+//     // If the key to be deleted
+//     // is smaller than the root's
+//     // key, then it lies in left subtree
+//     if (key < root->data)
+//         root->left = deleteNode(root->left, key);
+ 
+//     // If the key to be deleted
+//     // is greater than the root's
+//     // key, then it lies in right subtree
+//     else if (key > root->data)
+//         root->right = deleteNode(root->right, key);
+//     // if key is same as root's key,
+//     // then This is the node
+//     // to be deleted
+//     else {
+//         // node with only one child or no child
+//         if (root->left == NULL)
+//         {
+//             NODE* temp = root->right;
+//             free(root);
+//             return temp;
+//         }
+//         else if (root->right == NULL) 
+//         {
+//             NODE* temp = root->left;
+//             free(root);
+//             return temp;
+//         }
+ 
+//         // node with two children:
+//         // Get the inorder successor
+//         // (smallest in the right subtree)
+//         NODE* temp = minValueNode(root->right);
+
+//         // Copy the inorder
+//         // successor's content to this node
+//         root->data = temp->data;
+ 
+//         // Delete the inorder successor
+//         root->right = deleteNode(root->right, temp->data);
+//     }
+//     return root;
+// }
 int main()
 {
 
@@ -192,9 +249,13 @@ int main()
     insert(&root,210);
     printf("\nBefore deletion:");
     levelOrder(root);
-    deleteNode(root, 60);
-    deleteNode(root, 200);
-    deleteLeaf(root, 170);
+    printf("\ninorder traversal:");
+    inorderTraversal(root);
+    Delete(root,170);
+
+    // deleteNode(root, 60);
+    // deleteNode(root, 200);
+    // deleteLeaf(root, 170);
         printf("\nAfter deletion:");
     levelOrder(root);
     delete_tree(root);
