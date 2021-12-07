@@ -1,250 +1,178 @@
-/*Write a program to add and multiply two polynomials with single variable with a new function for addition and 
-multiplication operations.*/
-#include<stdio.h>
-#include<stdlib.h>
-typedef struct node NODE;
-struct node {
-    int coeff;
-    int exp;
+/*WAP to create a linked list that represents a polynomial expression with single variable (i.e. 5x7-3x5+x2+9)
+ and display the polynomial by using user defined functions for creation and display.Write a program to add 
+ and multiply two polynomials with single variable with a new function for addition and multiplication operations.*/
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node
+{
+    int coeff_006, exp_006;
     struct node *next;
-} *start1=NULL,*start2=NULL,*start3=NULL;
-void add_node(NODE *s)
-{
+};
 
-    
-        NODE *new=(NODE*)malloc(sizeof(NODE));
-        new->next=NULL;
-        printf("\nEnter coeff,exp:");
-        scanf("%d%d",&new->coeff,&new->exp);
-        s->next=new;
-    
-}
-void destroy1()
+struct node *add(struct node *poly1, struct node *poly2)
 {
-    if (!start1) return;
-
-    NODE *ds = start1;
-    while (ds != NULL)
+    struct node *head = NULL;
+    if (poly1 != NULL && poly2 != NULL)
     {
-        NODE *victim = ds;
-        ds = ds->next;
-        free (victim);
-    }
-}
-void destroy2()
-{
-    if (!start2) return;
-
-    NODE *ds = start2;
-    while (ds != NULL)
-    {
-        NODE *victim = ds;
-        ds = ds->next;
-        free (victim);
-    }
-}
-void destroy3()
-{
-    if (!start3) return;
-
-    NODE *ds = start3;
-    while (ds != NULL)
-    {
-        NODE *victim = ds;
-        ds = ds->next;
-        free (victim);
-    }
-}
-void display1(NODE *s)
-{
-    if(s==start1)
-    {
-        printf("%d(X^%d)",s->coeff,s->exp);
-        s=s->next;
-    }
-    
-    
-        while(s)
-        {   if(s->coeff<0)
+        struct node *head2 = NULL;
+        int m = 0;
+        if (poly1->exp_006 >= poly2->exp_006)
+            m = poly1->exp_006;
+        else
+            m = poly2->exp_006;
+        for (int i = m; i >= 0; i--)
+        {
+            struct node *Temp = (struct node *)malloc(sizeof(struct node));
+            Temp->exp_006 = i;
+            Temp->coeff_006 = 0;
+            Temp->next = NULL;
+            if (poly1->exp_006 == Temp->exp_006)
             {
-                printf("%d(X^%d)",s->coeff,s->exp);
+                Temp->coeff_006 += poly1->coeff_006;
+                poly1 = poly1->next;
+            }
+            if (poly2->exp_006 == Temp->exp_006)
+            {
+                Temp->coeff_006 += poly2->coeff_006;
+                poly2 = poly2->next;
+            }
+            if (head != NULL)
+            {
+                head2->next = Temp;
+                head2 = head2->next;
             }
             else
             {
-                printf("+%d(X^%d)",s->coeff,s->exp);
+                head = Temp;
+                head2 = Temp;
             }
-            
-            s=s->next;
         }
-    
-}
-void display2(NODE *s)
-{
-    if(s==start2)
-    {
-        printf("%d(X^%d)",s->coeff,s->exp);
-        s=s->next;
     }
-    
-    
-        while(s)
-        {   if(s->coeff<0)
-            {
-                printf("%d(X^%d)",s->coeff,s->exp);
-            }
-            else
-            {
-                printf("+%d(X^%d)",s->coeff,s->exp);
-            }
-            
-            s=s->next;
-        }
-    
+    return head;
 }
-void display3(NODE *s)
+struct node *multi(struct node *poly1, struct node *poly2)
 {
-    if(s==start3)
+    struct node *head = NULL;
+    if (poly1 != NULL && poly2 != NULL)
     {
-        printf("%d(X^%d)",s->coeff,s->exp);
-        s=s->next;
+        struct node *head2 = NULL;
     }
-    
-    
-        while(s)
-        {   if(s->coeff<0)
-            {
-                printf("%d(X^%d)",s->coeff,s->exp);
-            }
-            else
-            {
-                printf("+%d(X^%d)",s->coeff,s->exp);
-            }
-            
-            s=s->next;
-        }
-    
+    return head;
 }
-void sum(NODE *s1, int n1, NODE *s2, int n2)
+struct node *input()
 {
-    for(int i=1;i<=n1;++i)
+    int n;
+    struct node *head = NULL;
+    struct node *head2 = NULL;
+    printf("Enter the highest expree of polynomial : ");
+    scanf("%d", &n);
+    for (int i = n; i >= 0; i--)
     {
-        for(int j=1;j<=n2;++j)
+        printf("Enter the coefficient of x^%d : ", i);
+        int temp = 0;
+        scanf(" %d", &temp);
+        struct node *Temp = (struct node *)malloc(sizeof(struct node));
+        Temp->coeff_006 = temp;
+        Temp->exp_006 = i;
+        Temp->next = NULL;
+        if (head != NULL)
         {
-            if((s1->exp)==(s2->exp))
-            {
-                s1->coeff+=s2->coeff;
-            }
-            s2=s2->next;
+            head2->next = Temp;
+            head2 = head2->next;
         }
-        s1=s1->next;
-        s2=start2;
+        else
+        {
+            head = Temp;
+            head2 = Temp;
+        }
     }
+    return head;
 }
-void multiply(NODE *s1,int n1, NODE *s2, int n2)
+void display(struct node *head)
 {
-    start3=(NODE*)malloc(sizeof(NODE));
-    int n3=0;
-    NODE *s3=start3;
+    if (head == NULL)
+    {
+        printf("\n");
+        printf("Polynomial is empty.");
+    }
+    else
+    {
+        printf("\n");
+        printf("Polynomial : \n");
+    }
+    while (head != NULL)
+    {
+        if (head->coeff_006 != 0)
+        {
+            if (head->coeff_006 > 0)
+                printf("%dx^%d +", head->coeff_006, head->exp_006);
+            else
+                printf("%dx^%d ", head->coeff_006, head->exp_006);
+        }
+        head = head->next;
+    }
+    printf("\n");
+}
 
-    for(int i=1;i<=n1;++i)
-    {
-        for(int j=1;j<=n2;++j)
-        {
-            NODE *new=(NODE*)malloc(sizeof(NODE));
-            new->next=NULL; 
-            s3->next=new;
-            
-            int coeff$=(s1->coeff)*(s2->coeff);
-            int exp$=(s1->exp)+(s2->exp);
-            s3->coeff=coeff$;
-            s3->exp=exp$;
-            n3++;s3=s3->next;s2=s2->next;
-        }
-        s1=s1->next;
-        s2=start2;
-    }
-    s3=start3;NODE* s3$=start3;
-    for(int i=1;i<=n3;i++)
-    {
-        for(int j=1;j<=n3;j++)
-        {
-            
-            if((s3->exp)==(s3$->exp))
-            {   NODE *x=start3;
-                while(x->next!=s3$)
-                {
-                    x=x->next;
-                }
-                s3->coeff+=s3$->coeff;
-                x->next=s3$->next;
-                free(s3$);
-                s3$=x->next;
-            }
-            else 
-            {
-                s3$=s3$->next;
-            }
-        }
-        s3=s3->next;
-        s3$=start3;
-    }
+void exponent()
+{
+    for (int i = 0; i < 80; i++)
+        printf("_");
+    printf("\n");
 }
 
 int main()
 {
-    printf("Enter number of terms in 1:");
-    int n;
-    scanf("%d",&n);
-    NODE *temp1;
-    if(n>0)
+    struct node *poly1;
+    struct node *poly2;
+    struct node *polyadd;
+    struct node *polysub;
+    struct node *polyprod;
+    int c = 0, k = 1;
+    while (k)
     {
-        start1=(NODE*)malloc(sizeof(NODE));
-        start1->next=NULL;
-        printf("\nEnter coeff,exp:");
-        scanf("%d%d",&start1->coeff,&start1->exp);
-        
-    }  
-    temp1=start1;
-    for(int i=2;i<=n;++i)
-    {
-        add_node(temp1);
-        temp1=temp1->next;
+        printf("1.Create and display first polynomial\n");
+        printf("2.Create and display second polynomial\n");
+        printf("3.Add both polynomials and display the result\n");
+        printf("4.Multiply both polynomials and display the result\n");
+        printf("5.Exit\n");
+        exponent();
+        printf("Enter your choice : ");
+        scanf("%d", &c);
+        printf("\n");
+        switch (c)
+        {
+        case 1:
+            poly1 = input();
+            display(poly1);
+            exponent();
+            break;
+        case 2:
+            poly2 = input();
+            display(poly2);
+            exponent();
+            break;
+        case 3:
+            polyadd = add(poly1, poly2);
+            printf("added.\n");
+            display(polyadd);
+            exponent();
+            break;
+        case 4:
+            polyprod = multi(poly1, poly2);
+            printf("multiplied.\n");
+            display(polyprod);
+            exponent();
+            break;
+        case 5:
+            k = 0;
+            exponent();
+            break;
+        default:
+            printf("Incorrect choice\n");
+            exponent();
+        }
     }
-    temp1=start1;
-    display1(temp1);
-
-
-    
-    printf("\nEnter number of terms in 2:");
-    int n2;
-    scanf("%d",&n2);
-    NODE *temp2;
-    if(n2>0)
-    {
-        start2=(NODE*)malloc(sizeof(NODE));
-        start2->next=NULL;
-        printf("\nEnter coeff,exp:");
-        scanf("%d%d",&start2->coeff,&start2->exp);
-        
-    }  
-    temp2=start2;
-    for(int i=2;i<=n2;++i)
-    {
-        add_node(temp2);
-        temp2=temp2->next;
-    }
-    temp2=start2;
-    display2(temp2);
-    //sum(start1,n,start2,n2);
-   // printf("\nSUMMED:\n");
-   // display1(start1);
-    multiply(start1,n,start2,n2);
-    printf("\nMULTIPLIED:");
-    display3(start3);
-    destroy2();
-    destroy1();
-    destroy3();
     return 0;
-    
 }
-

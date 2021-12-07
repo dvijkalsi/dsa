@@ -16,7 +16,7 @@ int main()
     { 
         scanf("%d",&ar[i]);
     }
-    int c1=0,c2=n-1;
+    int c1=0 , c2=n-1;
     int arr[n];
     for(i=0;i<n;++i)
     {
