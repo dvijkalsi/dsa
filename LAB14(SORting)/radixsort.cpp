@@ -1,10 +1,12 @@
 #include<iostream>
 using namespace std;
+class Linkedlist;
 class node
 {
-    public:
+    
     int data;
     node *next;
+    public:
     node()
     {
         data=0;
@@ -15,18 +17,26 @@ class node
         this->data=data;
         this->next=NULL;
     }
+    friend class Linkedlist;
 };
 class Linkedlist
 {
-    public:
-    node *start;
     
+    node *start;
+    public:
     Linkedlist()
     {
         start=NULL;
     }
     void insertNode(int);
     int deleteNode();
+    int isempty()
+    {
+        if(!start)
+        return 1;
+        else 
+        return 0;
+    }
 };
 void Linkedlist::insertNode(int x)
 {
@@ -82,7 +92,7 @@ void radixsort(int a[],int n)
         i=j=0;
         while(i<10)
         {
-            while(list[i].start)
+            while(!(list[i].isempty()))
             {
                 a[j++]=list[i].deleteNode();
             }
