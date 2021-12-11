@@ -33,13 +33,15 @@ void disp(struct date *ar,int n)
 }
 void bubble_sort(struct date *ar,int n)
 {
-    int i,j;
+    int i,j,flag;
     i=j=0;
     float fj=0.0,fj1=0.0;
     for(i=0;i<n-1;++i)
     {
+        flag=1;
         for(j=0;j<n-i-1;++j)
         {
+            
             fj1=ar[j+1].year+(ar[j+1].month/12)+(ar[j+1].day/365);
             fj=ar[j].year+(ar[j].month/12)+(ar[j].day/365);
             if(fj>fj1)
@@ -47,8 +49,10 @@ void bubble_sort(struct date *ar,int n)
                 struct date t=ar[j+1];
                 ar[j+1]=ar[j];
                 ar[j]=t;
+                flag=0;
             }
         }
+        if(flag)  break;
     }
 }
 int main()

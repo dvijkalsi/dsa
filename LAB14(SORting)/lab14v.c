@@ -65,10 +65,12 @@ void bubble_sort_list(NODE *p)
         t=t->next;
     }
     NODE *a,*b;
+    int noSwap;
     for(int i=0;i<n-1;++i)
     {
         a=p;
         b=p->next;
+        noSwap=1;
         for(int j=0;j<n-i-1;++j)
         {
             if(a->data > b->data)
@@ -76,10 +78,12 @@ void bubble_sort_list(NODE *p)
                 int t=a->data;
                 a->data=b->data;
                 b->data=t;
+                noSwap=0;
             }
             a=b;
             b=b->next;
         }
+        if(noSwap)  break;
 
     }
     
