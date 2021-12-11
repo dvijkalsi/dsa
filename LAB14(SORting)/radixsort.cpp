@@ -66,31 +66,36 @@ int find_max(int a[],int n)
     }
     return max;
 }
-void binsort(int a[],int n)
+void radixsort(int a[],int n)
 {
-    int max,i,j;
+    int max,i,j,d;
     Linkedlist *list;
     max=find_max(a,n);
-    list=new Linkedlist[max+1];
-    for(i=0;i<n;i++)
+    list=new Linkedlist[10];
+    d=1;
+    while((max/d)!=0)
     {
-        list[a[i]].insertNode(a[i]);
-    }
-    i=j=0;
-    while(i<(max+1))
-    {
-        while(list[i].start)
+        for(i=0;i<n;i++)
         {
-            a[j++]=list[i].deleteNode();
+            list[(a[i]/d)%10].insertNode(a[i]);
         }
-        i++;
+        i=j=0;
+        while(i<10)
+        {
+            while(list[i].start)
+            {
+                a[j++]=list[i].deleteNode();
+            }
+            i++;
+        }
+        d*=10;
     }
 }
 int main()
 {
-    int a[]={1,1,1,4,3,2};
+    int a[]={111,1,1213,44343,3232123,2};
     int n=sizeof(a)/sizeof(a[0]);
-    binsort(a,n);
+    radixsort(a,n);
     for(int i=0;i<n;++i)
     {
         cout<<a[i]<<" ";
