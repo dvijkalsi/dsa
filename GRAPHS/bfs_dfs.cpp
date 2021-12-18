@@ -1,6 +1,7 @@
 #include<iostream>
 using namespace std;
 class Queue;
+class Stack;
 class node
 {
     
@@ -172,7 +173,7 @@ class graph
     {
         this->n=n;
         cout<<"\nEnter graph matrix\n";
-        ar=new int*[n+1];
+        ar=new int*[n+1];//not using 0th row, column
         for(int i=1;i<n+1;i++)
         {
             *(ar+i)=new int[n+1];
